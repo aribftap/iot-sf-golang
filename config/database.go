@@ -14,7 +14,7 @@ type CredentialDB struct {
 	password string
 	host     string
 	port     string
-	database string
+	name     string
 }
 
 func InitDB() *gorm.DB {
@@ -24,15 +24,16 @@ func InitDB() *gorm.DB {
 		password: os.Getenv("DB_PASSWORD"),
 		host:     os.Getenv("DB_HOSTNAME"),
 		port:     os.Getenv("DB_PORT"),
-		database: os.Getenv("DB_DATABASE"),
+		name:     os.Getenv("DB_NAME"),
 	}
 	var err error
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUrl.username, dbUrl.password, dbUrl.host, dbUrl.port, dbUrl.database)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUrl.username, dbUrl.password, dbUrl.host, dbUrl.port, dbUrl.name)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Error to connect database")
 	}
+
 	return db
 }
